@@ -1,8 +1,9 @@
 set exrc
 set secure
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
 set noexpandtab
-set colorcolumn=110
+set colorcolumn=100
+set relativenumber
 highlight ColorColumn ctermbg=darkgray
