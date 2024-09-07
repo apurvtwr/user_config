@@ -29,23 +29,28 @@ require("lazy").setup({
   },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.
-  install = { colorscheme = { "habamax" } },
+  --install = { colorscheme = { "nord" } },
   -- automatically check for plugin updates
   checker = { enabled = true },
   -- Theme plugins
   { 'morhetz/gruvbox' },
   { 'joshdick/onedark.vim' },
   { 'arcticicestudio/nord-vim' },
-  { 'folke/tokyonight.nvim' },
+  { 'folke/tokyonight.nvim', 
+    priority=1000, 
+    config = function()
+        vim.cmd('colorscheme tokyonight-night')
+    end
+  },
   { 'navarasu/onedark.nvim'}
 })
 
 
 local themes = {
-  'gruvbox',
-  'onedark',
-  'nord',
-  'tokyonight',
+  --'gruvbox',
+  --'onedark',
+  --'nord',
+  'tokyonight-night',
   -- Add more themes here if needed
 }
 
@@ -69,3 +74,4 @@ end
 -- Command to pick a theme
 vim.api.nvim_create_user_command('PickTheme', pick_theme, {})
 vim.api.nvim_set_keymap('n', '<leader>th', ':PickTheme<CR>', { noremap = true, silent = true })
+vim.cmd('colorscheme tokyonight-night')
