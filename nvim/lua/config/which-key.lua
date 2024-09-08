@@ -7,6 +7,7 @@ wk.add({
   { "<C-m>", "<cmd>Mason<cr>", desc="Mason Package Manager"},
   {"<C-l>", "<cmd>BufferLineCycleNext<cr>", desc="Next Tab"},
   {"<C-h>", "<cmd>BufferLineCyclePrev<cr>", desc="Prev Tab"},
+  {"q", "<cmd>bdelete!<cr>", desc="Delete current tab"},
   {"<C-\\>", "<cmd>ToggleTerm<cr>", desc="Floating Terminal"},
   {
     -- Nested mappings are allowed and can be added in any order
