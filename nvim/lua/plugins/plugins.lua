@@ -21,6 +21,36 @@ return {
       		})
     	end
     },
+    {
+        "nvim-telescope/telescope.nvim",
+        branch="0.1.x",
+        dependencies={
+            "nvim-lua/plenary.nvim",
+        }
+    },
+    {
+        "L3MON4D3/LuaSnip",
+        version = "v2.*",
+        build = "make install_jsregexp"
+    },
+
+    {"hrsh7th/cmp-nvim-lsp"},
+    {"hrsh7th/nvim-cmp"},
+    {"hrsh7th/cmp-buffer"},
+    {"hrsh7th/cmp-path"},
+    {"hrsh7th/vim-vsnip"},
+    {"hrsh7th/cmp-vsnip"},
+    {"saadparwaiz1/cmp_luasnip"},
+    {"onsails/lspkind.nvim"},
+    {"neovim/nvim-lspconfig"},
+    {"antosha417/nvim-lsp-file-operations", config= true},
+    {"folke/neodev.nvim", opts={}},
+    { 'j-hui/fidget.nvim',
+        tag = 'legacy',
+        config = function()
+            require('fidget').setup({})
+        end
+    },
     -- Bufferline
     {
         'akinsho/bufferline.nvim',
@@ -62,12 +92,6 @@ return {
         'folke/which-key.nvim',
         lazy = true,
     },
-    {
-    	"neovim/nvim-lspconfig",
-    },
+    
     { 'akinsho/toggleterm.nvim'},
-    { "hrsh7th/nvim-cmp" },
-    { "hrsh7th/cmp-nvim-lsp" },
-    { "hrsh7th/cmp-vsnip" },
-    { "hrsh7th/vim-vsnip" },
 }
