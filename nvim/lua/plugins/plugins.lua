@@ -17,7 +17,7 @@ return {
     	'williamboman/mason-lspconfig.nvim',
     	config = function()
       		require('mason-lspconfig').setup({
-        	ensure_installed = { "pyright" } -- Ensure Pyright is installed
+        	ensure_installed = { "pyright", "black", "isort" } -- Ensure Pyright is installed
       		})
     	end
     },
@@ -27,6 +27,12 @@ return {
         dependencies={
             "nvim-lua/plenary.nvim",
         }
+    },
+    {
+        "nvimtools/none-ls.nvim",
+        dependencies={
+            'nvim-lua/plenary.nvim',
+        } 
     },
     {
         "L3MON4D3/LuaSnip",
