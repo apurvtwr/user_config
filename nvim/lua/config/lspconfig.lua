@@ -8,8 +8,6 @@ mason_lspconfig.setup({
 
 capabilities = cmp_nvim_lsp.default_capabilities()
 
-lspconfig.black.setup({})
-
 lspconfig.pyright.setup{
   capabilities = capabilities,
   on_attach = function(client, bufnr)
