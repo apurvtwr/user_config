@@ -11,7 +11,8 @@ capabilities = cmp_nvim_lsp.default_capabilities()
 lspconfig.pyright.setup{
   capabilities = capabilities,
   on_attach = function(client, bufnr)
-    local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+    -- local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+    local buf_set_keymap = vim.api.nvim_buf_set_keymap
     local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
     buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
@@ -39,4 +40,4 @@ lspconfig.pyright.setup{
     end,
 }
 
-vim.lsp.set_log_level("debug")
+vim.lsp.set_log_level("error")

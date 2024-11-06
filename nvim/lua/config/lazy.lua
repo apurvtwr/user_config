@@ -39,7 +39,7 @@ require("lazy").setup({
   { 'folke/tokyonight.nvim', 
     priority=1000, 
     config = function()
-        vim.cmd('colorscheme tokyonight-night')
+        vim.cmd('colorscheme tokyonight')
     end
   },
   { 'navarasu/onedark.nvim'}
@@ -50,7 +50,10 @@ local themes = {
   --'gruvbox',
   --'onedark',
   --'nord',
+  'tokyonight-day', 
+  'tokyonight-moon',
   'tokyonight-night',
+  'tokyonight-storm',
   -- Add more themes here if needed
 }
 
@@ -74,4 +77,4 @@ end
 -- Command to pick a theme
 vim.api.nvim_create_user_command('PickTheme', pick_theme, {})
 vim.api.nvim_set_keymap('n', '<leader>th', ':PickTheme<CR>', { noremap = true, silent = true })
-vim.cmd('colorscheme tokyonight-night')
+vim.cmd('colorscheme tokyonight-day')
