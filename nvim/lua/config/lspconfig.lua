@@ -3,7 +3,7 @@ lspconfig = require("lspconfig")
 cmp_nvim_lsp = require("cmp_nvim_lsp")
 mason_lspconfig = require("mason-lspconfig")
 mason_lspconfig.setup({
-    ensure_installed = { "pyright" },
+    ensure_installed = { "pyright", "clangd" },
 })
 
 capabilities = cmp_nvim_lsp.default_capabilities()
@@ -40,4 +40,10 @@ lspconfig.pyright.setup{
     end,
 }
 
+lspconfig.clangd.setup{
+  capabilities = capabilities,
+  cmd = { "clangd" },
+  filetypes = { "c", "cpp", "objc", "objcpp" },
+  root_dir = lspconfig.util.root_pattern("compile_commands.json", ".git"),
+}
 vim.lsp.set_log_level("error")
