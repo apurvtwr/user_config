@@ -100,4 +100,21 @@ return {
     },
     
     { 'akinsho/toggleterm.nvim'},
+    { 'danymat/neogen',
+        dependencies = {
+            "nvim-treesitter/nvim-treesitter",
+        },
+        cmd = "Neogen",
+        keys = {
+            { "<leader>d", function() require("neogen").generate() end, desc = "Generate Docstring" },
+        },
+    },
+    {
+        "nvim-treesitter/nvim-treesitter",
+        build = ":TSUpdate", -- Need to run :TSInstall python cpp
+        opts = {
+        ensure_installed = { "python", "cpp", "c" }, -- add others if needed
+        highlight = { enable = true },
+        }
+    }
 }
