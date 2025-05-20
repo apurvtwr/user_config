@@ -7,6 +7,7 @@ vim.opt.colorcolumn = "100"
 vim.api.nvim_create_autocmd("BufReadPost", {
   pattern = "*",
   callback = function()
+    vim.bo.modifiable = true
     vim.opt.fileformat = "unix"
   end,
 })
@@ -20,3 +21,4 @@ require("config.nvim-cmp-config")
 require("config.lspconfig")
 require("config.null-ls-config")
 require("config.neogen-config")
+require("config.telescope")
