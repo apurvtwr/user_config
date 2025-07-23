@@ -11,6 +11,8 @@ vim.api.nvim_create_autocmd("BufReadPost", {
     vim.opt.fileformat = "unix"
   end,
 })
+vim.keymap.set("v", "<leader>y", '"+y')
+vim.keymap.set("n", "<leader>y", '"+yy')
 require("config.lazy")
 require("config.nvim-tree-config")
 require("config.which-key")
