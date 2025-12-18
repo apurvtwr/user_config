@@ -23,6 +23,20 @@ gpt.setup({
     default_agent = "GPT52",
 })
 
+local function visual_line_range()
+  -- start of visual selection
+  local vpos = vim.fn.getpos("v")
+  local vline = vpos[2]
+
+  -- current cursor position (end of selection)
+  local cpos = vim.fn.getpos(".")
+  local cline = cpos[2]
+
+  local sline = math.min(vline, cline)
+  local eline = math.max(vline, cline)
+  return sline, eline
+end
+
 local function gp_comment_prompt()
     local ft = vim.bo.filetype
 
@@ -31,6 +45,7 @@ local function gp_comment_prompt()
             "Add pythonic documentation:",
             " Use Google-style docstrings (triple quotes) for functions/classes.",
             " Add minimal inline comments only where intent is not obvious",
+            " Document parameters, types and a snippet about them",
             " Do not change the code.",
         }, " ")
     elseif ft == "cpp" or ft == "c" then
@@ -47,7 +62,13 @@ end
 
 vim.keymap.set("v", "<leader>gc", function()
     local prompt = gp_comment_prompt()
-    vim.cmd(string.format("'<,'>GpRewrite %s", prompt))
+
+    local sline, eline = visual_line_range()
+
+    -- leave visual mode so gp can safely edit
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+
+    vim.cmd(string.format("%d,%dGpRewrite %s", sline, eline, prompt))
 end, { desc = "Generate documentation" })
 
 vim.keymap.set("n", "<leader>gc", function()
