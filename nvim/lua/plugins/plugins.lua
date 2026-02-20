@@ -117,5 +117,9 @@ return {
     {
         -- chatgpt code comments
         "robitx/gp.nvim",
+    },
+    {
+        "mfussenegger/nvim-jdtls", -- java language server
+        ft = "java",
     }
 }

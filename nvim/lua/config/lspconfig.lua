@@ -3,14 +3,13 @@ lspconfig = require("lspconfig")
 cmp_nvim_lsp = require("cmp_nvim_lsp")
 mason_lspconfig = require("mason-lspconfig")
 mason_lspconfig.setup({
-    ensure_installed = { "pyright", "clangd" },
+    ensure_installed = { "pyright", "clangd", "jdtls" },
 })
 
 capabilities = cmp_nvim_lsp.default_capabilities()
 
-lspconfig.pyright.setup{
-  capabilities = capabilities,
-  on_attach = function(client, bufnr)
+
+on_attach = function(client, bufnr)
     -- local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
     local buf_set_keymap = vim.api.nvim_buf_set_keymap
     local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
@@ -37,13 +36,22 @@ lspconfig.pyright.setup{
     buf_set_keymap(bufnr, 'n', ']d', '<Cmd>lua vim.diagnostic.goto_next()<CR>', opts)
     buf_set_keymap(bufnr, 'n', '<space>q', '<Cmd>lua vim.diagnostic.setloclist()<CR>', opts)
     buf_set_keymap(bufnr, 'n', '<space>f', '<Cmd>lua vim.lsp.buf.formatting()<CR>', opts)
-    end,
+
+end
+
+-- Python Setting 
+lspconfig.pyright.setup{
+  capabilities = capabilities,
+  on_attach = on_attach
 }
 
+-- C++ Setting 
 lspconfig.clangd.setup{
   capabilities = capabilities,
+  on_attach = on_attach,
   cmd = { "clangd" },
   filetypes = { "c", "cpp", "objc", "objcpp" },
   root_dir = lspconfig.util.root_pattern("compile_commands.json", ".git"),
 }
+
 vim.lsp.set_log_level("error")
