@@ -55,6 +55,14 @@ local function gp_comment_prompt()
             " Document parameters, units, ownership, and invariants.",
             " Do not restate obvious code.",
         }, " ")
+    elseif ft == "java" then
+        return table.concat({
+            " Add concise Javadoc-style comments:",
+            " Use /** */ for doc blocks and // for inline comments.",
+            " Document parameters, units, ownership, and invariants.",
+            " Do not restate obvious code.",
+        }, " ")
+
     else
         return "Add concise comments appropriate for this language and its conventions."
     end
