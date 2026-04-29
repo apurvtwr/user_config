@@ -31,7 +31,7 @@ on_attach = function(client, bufnr)
     buf_set_keymap(bufnr, 'n', '<space>w', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
     buf_set_keymap(bufnr, 'n', '<space>rn', '<Cmd>lua vim.lsp.buf.rename()<CR>', opts)
     buf_set_keymap(bufnr, 'n', '<space>q', '<Cmd>lua vim.diagnostic.setloclist()<CR>', opts)
-    buf_set_keymap(bufnr, 'n', '<space>f', '<Cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+    buf_set_keymap(bufnr, 'n', '<space>f', '<Cmd>lua vim.lsp.buf.format()<CR>', opts)
 
 end
 
