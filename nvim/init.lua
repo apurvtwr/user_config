@@ -4,6 +4,7 @@ vim.opt.tabstop = 4       -- Number of spaces tabs count for
 vim.opt.shiftwidth = 4    -- Number of spaces to use for each step of (auto)indent
 vim.opt.expandtab = true  -- Use spaces instead of tabs
 vim.opt.colorcolumn = "100"
+vim.g.mapleader = " "
 vim.api.nvim_create_autocmd("BufReadPost", {
   pattern = "*",
   callback = function()
@@ -13,6 +14,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 })
 vim.keymap.set("v", "<leader>y", '"+y')
 vim.keymap.set("n", "<leader>y", '"+yy')
+vim.keymap.set("n", "<leader>p", '"+p')
 require("config.lazy")
 require("config.nvim-tree-config")
 require("config.which-key")
@@ -25,3 +27,4 @@ require("config.null-ls-config")
 require("config.telescope")
 require("config.chatgpt-config")
 require("config.java")
+
