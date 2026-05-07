@@ -1,85 +1,115 @@
-local gpt = require("gp")
-gpt.setup({
-    log_level = "debug",
-    providers = {
-        openai = {
-            api_key = os.getenv("OPENAI_API_KEY"),
-        },
-    },
+local gp = require("gp")
+local defaults = require("gp.defaults")
 
-    agents = {
-		{
-			name = "GPT52",
-            provider = "openai",
-            model = "gpt-5.2",
-			disable = false,
-            chat = true,
-			command = true,
-			-- system prompt (use this to specify the persona/role of the AI)
-			system_prompt = require("gp.defaults").chat_system_prompt,
-		},
-        
-	},
-    default_agent = "GPT52",
+gp.setup({
+  log_level = "debug",
+
+  providers = {
+    openai = {
+      endpoint = "https://api.openai.com/v1/chat/completions",
+      secret = os.getenv("OPENAI_API_KEY"),
+    },
+  },
+
+  agents = {
+    {
+      name = "GPT52",
+      provider = "openai",
+      model = { model = "gpt-5.2" },
+      disable = false,
+      chat = true,
+      command = true,
+      system_prompt = defaults.chat_system_prompt,
+    },
+  },
+
+  default_chat_agent = "GPT52",
+  default_command_agent = "GPT52",
 })
 
 local function visual_line_range()
-  -- start of visual selection
   local vpos = vim.fn.getpos("v")
-  local vline = vpos[2]
-
-  -- current cursor position (end of selection)
   local cpos = vim.fn.getpos(".")
+
+  local vline = vpos[2]
   local cline = cpos[2]
 
-  local sline = math.min(vline, cline)
-  local eline = math.max(vline, cline)
-  return sline, eline
+  return math.min(vline, cline), math.max(vline, cline)
 end
 
 local function gp_comment_prompt()
-    local ft = vim.bo.filetype
+  local ft = vim.bo.filetype
 
-    if ft == "python" then
-        return table.concat({
-            "Add pythonic documentation:",
-            " Use Google-style docstrings (triple quotes) for functions/classes.",
-            " Add minimal inline comments only where intent is not obvious",
-            " Document parameters, types and a snippet about them",
-            " Do not change the code.",
-        }, " ")
-    elseif ft == "cpp" or ft == "c" then
-        return table.concat({
-            " Add concise Doxygen-style comments:",
-            " Use /** */ for doc blocks and // for inline comments.",
-            " Document parameters, units, ownership, and invariants.",
-            " Do not restate obvious code.",
-        }, " ")
-    elseif ft == "java" then
-        return table.concat({
-            " Add concise Javadoc-style comments:",
-            " Use /** */ for doc blocks and // for inline comments.",
-            " Document parameters, units, ownership, and invariants.",
-            " Do not restate obvious code.",
-        }, " ")
+  if ft == "python" then
+    return table.concat({
+      "Add pythonic documentation.",
+      "Use Google-style docstrings with triple quotes for functions and classes.",
+      "Add minimal inline comments only where intent is not obvious.",
+      "Document parameters, types, return values, exceptions, and key assumptions.",
+      "Do not change the code.",
+    }, " ")
+  end
 
-    else
-        return "Add concise comments appropriate for this language and its conventions."
-    end
+  if ft == "cpp" or ft == "c" or ft == "hpp" or ft == "h" then
+    return table.concat({
+      "Add concise Doxygen-style comments.",
+      "Use /** */ for function, class, and struct doc blocks.",
+      "Use // only for useful inline comments.",
+      "Document parameters, units, ownership, invariants, preconditions, and return values.",
+      "Do not restate obvious code.",
+      "Do not change the code.",
+    }, " ")
+  end
+
+  if ft == "java" then
+    return table.concat({
+      "Add concise Javadoc-style comments.",
+      "Use /** */ for function, class, and interface doc blocks.",
+      "Use // only for useful inline comments.",
+      "Document parameters, units, ownership, invariants, preconditions, and return values.",
+      "Do not restate obvious code.",
+      "Do not change the code.",
+    }, " ")
+  end
+
+  return table.concat({
+    "Add concise comments appropriate for this language and its conventions.",
+    "Document intent, parameters, return values, ownership, invariants, and important assumptions.",
+    "Do not restate obvious code.",
+    "Do not change the code.",
+  }, " ")
+end
+
+local function escape_visual_mode()
+  vim.api.nvim_feedkeys(
+    vim.api.nvim_replace_termcodes("<Esc>", true, false, true),
+    "n",
+    true
+  )
 end
 
 vim.keymap.set("v", "<leader>gc", function()
-    local prompt = gp_comment_prompt()
+  local prompt = gp_comment_prompt()
+  local sline, eline = visual_line_range()
 
-    local sline, eline = visual_line_range()
+  escape_visual_mode()
 
-    -- leave visual mode so gp can safely edit
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
-
-    vim.cmd(string.format("%d,%dGpRewrite %s", sline, eline, prompt))
-end, { desc = "Generate documentation" })
+  vim.cmd({
+    cmd = "GpRewrite",
+    range = { sline, eline },
+    args = { prompt },
+  })
+end, {
+  desc = "Generate documentation for selection",
+})
 
 vim.keymap.set("n", "<leader>gc", function()
-    local prompt = gp_comment_prompt()
-    vim.cmd(string.format("GpRewrite %s", prompt))
-end, { desc = "Generate documentation" })
+  local prompt = gp_comment_prompt()
+
+  vim.cmd({
+    cmd = "GpRewrite",
+    args = { prompt },
+  })
+end, {
+  desc = "Generate documentation",
+})
