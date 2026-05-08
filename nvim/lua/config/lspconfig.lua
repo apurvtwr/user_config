@@ -51,4 +51,3 @@ lspconfig.clangd.setup{
   root_dir = lspconfig.util.root_pattern("compile_commands.json", ".git"),
 }
 
-vim.lsp.set_log_level("error")
