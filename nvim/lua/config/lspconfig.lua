@@ -51,3 +51,9 @@ lspconfig.clangd.setup{
   root_dir = lspconfig.util.root_pattern("compile_commands.json", ".git"),
 }
 
+vim.api.nvim_create_autocmd("BufWritePre", {
+    pattern = {"*.cpp", "*.hpp", "*.cc", "*.h", "*.py", "*.java"},
+    callback = function()
+        vim.lsp.buf.format({async = false})
+    end,
+})

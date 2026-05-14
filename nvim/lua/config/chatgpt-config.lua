@@ -80,6 +80,22 @@ local function gp_comment_prompt()
   }, " ")
 end
 
+local function gp_implement_function_prompt()
+  local ft = vim.bo.filetype
+
+  return table.concat({
+    "Write the implementation for the selected function.",
+    "",
+    "Use the function signature, comments, and surrounding context.",
+    "Preserve the existing function signature.",
+    "Only replace the selected function body or stub.",
+    "Add concise comments for this language and it's conventions.",
+    "Document intent, parameters, return values ownership, invariants, and important assumptions",
+    "",
+    "Language/filetype: " .. ft,
+  }, "\n")
+end
+
 local function escape_visual_mode()
   vim.api.nvim_feedkeys(
     vim.api.nvim_replace_termcodes("<Esc>", true, false, true),
@@ -112,4 +128,20 @@ vim.keymap.set("n", "<leader>gc", function()
   })
 end, {
   desc = "Generate documentation",
+})
+
+
+vim.keymap.set("v", "<leader>gi", function()
+  local prompt = gp_implement_function_prompt()
+  local sline, eline = visual_line_range()
+
+  escape_visual_mode()
+
+  vim.cmd({
+    cmd = "GpRewrite",
+    range = { sline, eline },
+    args = { prompt },
+  })
+end, {
+  desc = "Generate function implementation with GP",
 })
