@@ -17,7 +17,7 @@ return {
     	'williamboman/mason-lspconfig.nvim',
     	config = function()
       		require('mason-lspconfig').setup({
-        	ensure_installed = { "pyright", "black", "isort" }, -- Ensure Pyright is installed
+        	ensure_installed = { "pyright", "black", "isort", "ruff", "clangd", "clang-format"}, -- Ensure Pyright is installed
             automatic_enable = false,
       		})
     	end
