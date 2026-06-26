@@ -1,13 +1,26 @@
 local gp = require("gp")
 local defaults = require("gp.defaults")
 
+local function get_openai_api_key()
+    local result = vim.system({
+        "op",
+        "read",
+        "op://Personal/OpenAI_API_KEY/notesPlain",
+    }, { text = true }):wait()
+
+    if result.code ~= 0 then
+        error("Failed to read OpenAI API key from 1Password:\n" .. result.stderr)
+    end
+
+    return vim.trim(result.stdout)
+end
 gp.setup({
   log_level = "debug",
 
   providers = {
     openai = {
       endpoint = "https://api.openai.com/v1/chat/completions",
-      secret = os.getenv("OPENAI_API_KEY"),
+      secret = get_openai_api_key(),
     },
   },
 
